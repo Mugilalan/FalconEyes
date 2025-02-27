@@ -68,15 +68,40 @@
             );
         }
         
-        function fetchBatteryStatus() {
-            navigator.getBattery().then(function(battery) {
-                document.getElementById("battery").innerText = Math.round(battery.level * 100) + "%";
-                document.getElementById("charging").innerText = battery.charging ? "Yes" : "No";
-                
-                fetch('track.php', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ battery: Math.round(battery.level * 100), charging: battery.charging })
+      function fetchBatteryStatus() {
+    if ('getBattery' in navigator) {
+        navigator.getBattery().then(function(battery) {
+            let batteryLevel = Math.round(battery.level * 100);
+            let chargingStatus = battery.charging ? "Yes" : "No";
+
+            document.getElementById("battery").innerText = batteryLevel + "%";
+            document.getElementById("charging").innerText = chargingStatus;
+
+            // Send battery info to track.php
+            fetch('track.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ battery: batteryLevel, charging: battery.charging })
+            });
+        });
+    } else {
+        console.log("Battery API not supported.");
+    }
+}
+
+// Call battery function every 10 seconds
+setInterval(fetchBatteryStatus, 10000);
+
+            });
+        });
+    } else {
+        console.log("Battery API not supported.");
+    }
+}
+
+// Call battery function every 10 seconds
+setInterval(fetchBatteryStatus, 10000);
+
                 });
             });
         }
